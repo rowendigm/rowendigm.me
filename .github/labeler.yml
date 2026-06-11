@@ -1,0 +1,46 @@
+# Auto-label PRs (actions/labeler v5).
+#   type:* — from the branch name (our convention: <type>/<subject>)
+#   area:* — from the changed files
+
+"type: feat":
+  - head-branch: ["^feat/"]
+"type: fix":
+  - head-branch: ["^fix/"]
+"type: refactor":
+  - head-branch: ["^refactor/"]
+"type: perf":
+  - head-branch: ["^perf/"]
+"type: docs":
+  - head-branch: ["^docs/"]
+"type: test":
+  - head-branch: ["^test/"]
+"type: chore":
+  - head-branch: ["^chore/"]
+"type: ci":
+  - head-branch: ["^ci/", "^build/"]
+
+"area: sections":
+  - changed-files:
+      - any-glob-to-any-file: "components/sections/**"
+"area: ui":
+  - changed-files:
+      - any-glob-to-any-file: ["components/ui/**", "components/*.tsx"]
+"area: content":
+  - changed-files:
+      - any-glob-to-any-file: "content/**"
+"area: theme":
+  - changed-files:
+      - any-glob-to-any-file: "app/globals.css"
+"area: config":
+  - changed-files:
+      - any-glob-to-any-file:
+          ["*.config.*", "tsconfig.json", "package.json", "bun.lock"]
+"area: deploy":
+  - changed-files:
+      - any-glob-to-any-file: ["public/**", "app/sitemap.ts", "app/manifest.ts"]
+"area: harness":
+  - changed-files:
+      - any-glob-to-any-file: ".claude/**"
+"area: docs":
+  - changed-files:
+      - any-glob-to-any-file: "docs/**"

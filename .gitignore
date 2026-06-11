@@ -1,0 +1,24 @@
+# Dependencies
+/node_modules
+
+# Next.js
+/.next/
+/out/
+next-env.d.ts
+
+# Build / cache
+*.tsbuildinfo
+.turbo/
+
+# Environment (keep the example)
+.env
+.env.*
+!.env.example
+
+# Local tooling (harness is tracked; machine-local settings are not)
+.claude/settings.local.json
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.log
