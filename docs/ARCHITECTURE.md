@@ -18,13 +18,13 @@ in `adr/`; everything else here is expected to evolve.
 
 ```
 app/
-  layout.tsx        # fonts, metadata (metadataBase from NEXT_PUBLIC_SITE_URL),
-                    #   Cloudflare Web Analytics, BackgroundTraces mount
+  layout.tsx        # metadata (metadataBase from NEXT_PUBLIC_SITE_URL);
+                    #   fonts + Cloudflare Web Analytics + BackgroundTraces (page PR)
   page.tsx          # composes the sections
   globals.css       # @import "tailwindcss" + @theme tokens + keyframes (tokens: theme PR)
-  sitemap.ts        # build-time sitemap (no app/robots.ts — export bug, see public/robots.txt)
-  not-found.tsx
-  manifest.ts
+  sitemap.ts        # build-time sitemap (no app/robots.ts — export bug) (seo PR)
+  not-found.tsx     # (page PR)
+  manifest.ts       # (seo PR)
   icon.tsx          # (seo PR)
 components/
   BackgroundTraces.tsx
@@ -73,8 +73,8 @@ Components never hardcode copy; they render the data they are given.
 
 ## Styling
 
-- PCB palette + motion tokens in `@theme` (ADR 0004), defined in `app/globals.css` at
-  scaffold time.
+- PCB palette + motion tokens in `@theme` (ADR 0004), defined in `app/globals.css`
+  (theme PR).
 - Class composition via `cn()` (clsx + tailwind-merge).
 - All motion respects `prefers-reduced-motion`.
 
