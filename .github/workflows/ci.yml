@@ -18,8 +18,40 @@ env:
   NEXT_PUBLIC_SITE_URL: https://rowendigm.me
 
 jobs:
-  verify:
-    name: verify (typecheck + lint + build)
+  # Detect what changed — job-level filters instead of trigger-level `paths`,
+  # so the required `verify` check always reports (a `paths`-skipped workflow
+  # would leave the check "Expected" forever and block the merge).
+  changes:
+    name: detect changes
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.filter.outputs.code }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Filter paths
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            code:
+              - "app/**"
+              - "components/**"
+              - "content/**"
+              - "lib/**"
+              - "public/**"
+              - "package.json"
+              - "bun.lock"
+              - "tsconfig.json"
+              - "biome.json"
+              - "*.config.*"
+              - ".github/workflows/ci.yml"
+
+  typecheck:
+    name: typecheck
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -30,30 +62,68 @@ jobs:
         with:
           bun-version: "1.3.x"
 
-      # The app is scaffolded later (Phase 2). Until package.json exists the
-      # gate is a graceful no-op so the harness-only repo still passes CI.
-      - name: Skip if app not scaffolded
-        id: guard
-        run: |
-          if [ ! -f package.json ]; then
-            echo "App not scaffolded yet (no package.json) — skipping verify."
-            echo "scaffolded=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "scaffolded=true" >> "$GITHUB_OUTPUT"
-          fi
-
       - name: Install dependencies
-        if: steps.guard.outputs.scaffolded == 'true'
         run: bun install --frozen-lockfile
 
       - name: Typecheck
-        if: steps.guard.outputs.scaffolded == 'true'
         run: bun run typecheck
 
+  lint:
+    name: lint
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.x"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
       - name: Lint
-        if: steps.guard.outputs.scaffolded == 'true'
         run: bun run lint
 
+  build:
+    name: build
+    needs: changes
+    if: needs.changes.outputs.code == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: "1.3.x"
+
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
+
       - name: Build
-        if: steps.guard.outputs.scaffolded == 'true'
         run: bun run build
+
+  # Summary gate — the single required check. Green when the three jobs pass,
+  # or when they were skipped because no code changed.
+  verify:
+    name: verify (typecheck + lint + build)
+    needs: [changes, typecheck, lint, build]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Gate
+        run: |
+          results="${{ needs.typecheck.result }} ${{ needs.lint.result }} ${{ needs.build.result }}"
+          echo "results: $results"
+          for r in $results; do
+            if [ "$r" = "failure" ] || [ "$r" = "cancelled" ]; then
+              echo "verify failed"
+              exit 1
+            fi
+          done
+          echo "verify ok"
