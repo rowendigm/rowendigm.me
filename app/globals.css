@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@theme inline {
+  /* fonts reference runtime vars (next/font), hence the inline theme */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, Menlo, monospace;
+}
+
 @theme {
   /* ── PCB palette (ADR 0007) ─────────────────────── */
   --color-board: #0a0907; /* substrate */
@@ -19,10 +25,6 @@
   --color-amber-line: rgb(245 158 11 / 0.32);
   --color-online: #4ade80; /* the single green LED */
   --color-on-amber: #1a1206; /* text on amber */
-
-  /* ── type ───────────────────────────────────────── */
-  --font-sans: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 
   /* ── shape ──────────────────────────────────────── */
   --radius-card: 12px;
