@@ -22,7 +22,7 @@ in `adr/`; everything else here is expected to evolve.
 app/
   layout.tsx        # metadata (metadataBase from NEXT_PUBLIC_SITE_URL);
                     #   JetBrains Mono self-hosted via next/font, Pretendard via CDN;
-                    #   Cloudflare Web Analytics (deploy PR)
+                    #   Cloudflare Web Analytics beacon
   page.tsx          # composes TopNav + sections ('use client' — the lang boundary)
   globals.css       # @import "tailwindcss" + @theme tokens + keyframes (tokens: theme PR)
   sitemap.ts        # build-time sitemap (no app/robots.ts — export bug)
@@ -46,6 +46,7 @@ lib/
   storage.ts        # safe localStorage access (client-storage rule S1/S3/S4)
 public/
   _headers          # Cloudflare security headers (CSP: jsdelivr + cloudflare insights)
+                    #   + immutable caching for /_next/static
   robots.txt        # static robots (app/robots.ts broken under export)
   og.png            # static Open Graph image (no dynamic OG — ADR 0002)
 ```
