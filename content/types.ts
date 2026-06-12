@@ -86,6 +86,7 @@ export type UiStrings = {
     stack: Localized;
     projects: Localized;
     career: Localized;
+    langLabel: Localized; // sr-only legend for the language toggle
   };
   headings: {
     stack: Localized;
