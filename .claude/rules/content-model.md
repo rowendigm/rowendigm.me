@@ -7,6 +7,8 @@ paths:
 
 - All user-facing copy lives in `content/`, typed by `ProfileData` (`content/types.ts`),
   validated by `content/schema.ts`. **No hardcoded strings in components.**
+- Copy is **bilingual**: every text field is a `{ko, en}` pair, resolved via `lib/i18n`
+  (ADR 0006). The schema fails the build if either language is missing.
 - Components receive **slices** of `ProfileData` as props and render what they are given —
   never reach into a global.
 - State unions (e.g. an item's `status`) are defined **once in `content/types.ts`** — rules

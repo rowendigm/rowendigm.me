@@ -9,9 +9,10 @@ in `adr/`; everything else here is expected to evolve.
 ## Rendering model
 
 - **Next.js 15 App Router** with **`output: 'export'`** → fully static `out/` directory
-  (ADR 0002). No server runtime at request time.
-- **Server Components by default.** The only client component is `ui/Accordion`
-  (`'use client'`), used for the Planned roadmap's expand/collapse.
+  (ADR 0002). No server runtime at request time — every interactive feature below runs
+  entirely in the browser.
+- **Server Components render the shell**; the interactive layer (KO/EN toggle, KST clock
+  — ADR 0006) lives in client leaves kept as small as the feature allows.
 - **Tailwind v4 CSS-first** (ADR 0003): tokens in `app/globals.css` `@theme`.
 
 ## Directory map
@@ -19,23 +20,26 @@ in `adr/`; everything else here is expected to evolve.
 ```
 app/
   layout.tsx        # metadata (metadataBase from NEXT_PUBLIC_SITE_URL);
-                    #   fonts + Cloudflare Web Analytics + BackgroundTraces (page PR)
-  page.tsx          # composes the sections
+                    #   fonts (Pretendard Variable + JetBrains Mono) + Analytics (page PR)
+  page.tsx          # composes TopNav + sections
   globals.css       # @import "tailwindcss" + @theme tokens + keyframes (tokens: theme PR)
   sitemap.ts        # build-time sitemap (no app/robots.ts — export bug) (seo PR)
   not-found.tsx     # (page PR)
   manifest.ts       # (seo PR)
   icon.tsx          # (seo PR)
 components/
-  BackgroundTraces.tsx
-  sections/ { Hero, Now, Planned, Footer }.tsx
-  ui/ { Led, SectionLabel, Accordion }.tsx
+  TopNav.tsx        # client — logo + online LED, KST clock, section links,
+                    #   KO/EN segment, contact CTA
+  BackgroundTraces.tsx  # substrate pattern + hero trace field + mirrored bottom field
+  sections/ { Hero, Stack, Now, Planned, Contrib, Career, Footer }.tsx
+  ui/ { Led, SectionLabel, Chip, Tag }.tsx
 content/
-  types.ts          # ProfileData and friends
+  types.ts          # ProfileData and friends — every copy field is a {ko,en} pair
   schema.ts         # runtime validation (build-time gate)
-  data.ts           # the actual profile content
+  data.ts           # the profile content + UI strings (both languages)
 lib/
   utils.ts          # cn()
+  i18n.ts           # L/tr helpers — resolve {ko,en} by active language (content PR)
 public/
   _headers          # Cloudflare security headers (CSP, etc. — content: seo PR)
   robots.txt        # static robots (app/robots.ts broken under export — content: seo PR)
@@ -46,37 +50,51 @@ public/
 ## Data flow
 
 `content/data.ts` (typed by `content/types.ts`, validated by `content/schema.ts`) is the
-single source of profile content. `app/page.tsx` reads `ProfileData` and passes **slices**
-to each section:
+single source of profile content, in both languages (ADR 0006). The only write path is
+a `data.ts` PR — there is no edit mode.
 
 ```
-ProfileData
-  ├─ name, role, tagline, contact ─▶ Hero
-  ├─ now[]                         ─▶ Now   ─▶ Led, SectionLabel
-  ├─ planned[]                     ─▶ Planned ─▶ Accordion, SectionLabel
-  └─ contact, name                ─▶ Footer
+content/data.ts (ko+en) ── resolved by active language (lib/i18n)
+                                            ▼
+  ├─ badge, headline, bio, flow[]  ─▶ Hero
+  ├─ stack[]                       ─▶ Stack   ─▶ Chip, SectionLabel
+  ├─ now[]                         ─▶ Now     ─▶ Tag, SectionLabel
+  ├─ planned[]                     ─▶ Planned ─▶ Tag, SectionLabel
+  ├─ contrib[]                     ─▶ Contrib ─▶ Tag, SectionLabel
+  ├─ history[]                     ─▶ Career  ─▶ SectionLabel (timeline)
+  └─ contact[], personal           ─▶ Footer
 ```
 
 Components never hardcode copy; they render the data they are given.
 
 ## Page composition
 
+One column, `max-width 760px`, on a dark board. Numbered sections (01–05).
+
 ```
-<BackgroundTraces />   # fixed, -z-10, ambient
+<TopNav />             # sticky — logo·LED, clock, links, KO/EN, CTA
+<BackgroundTraces />   # substrate pattern + hero trace field + mirrored bottom
 <main>
-  <Hero />
-  <Now />
-  <Planned />
+  <Hero />             # badge · headline (amber accent) · bio · flow chips
+  <Stack />            # 01 — two-column component-bank grid
+  <Now />              # 02 — current work cards
+  <Planned />          # 03 — project plans
+  <Contrib />          # 04 — open source
+  <Career />           # 05 — timeline (rail + amber nodes)
 </main>
-<Footer />
+<Footer />             # contact buttons (mono key labels) + personal line
 ```
 
 ## Styling
 
-- PCB palette + motion tokens in `@theme` (ADR 0004), defined in `app/globals.css`
-  (theme PR).
+- PCB palette + motion tokens in `@theme` (ADR 0007: warm-dark substrate `#0a0907`,
+  copper lines, **amber `#f59e0b` as the only strong accent**, one green online LED),
+  defined in `app/globals.css` (theme PR).
+- Type: Pretendard Variable for body (15px/1.6, `word-break: keep-all`),
+  JetBrains Mono for silkscreen labels/metadata.
 - Class composition via `cn()` (clsx + tailwind-merge).
-- All motion respects `prefers-reduced-motion`.
+- Motion: trace glow/flow keyframes + LED pulse only — no scroll effects.
+  All motion respects `prefers-reduced-motion`.
 
 ## Deploy pipeline
 
@@ -111,5 +129,7 @@ The map above is the current state, not a ceiling. To grow it:
 - [0001 — Cloudflare Pages](adr/0001-cloudflare-pages.md)
 - [0002 — Static export](adr/0002-static-export.md)
 - [0003 — Tailwind v4 CSS-first](adr/0003-tailwind-v4.md)
-- [0004 — PCB theme](adr/0004-pcb-theme.md)
+- [0004 — PCB theme](adr/0004-pcb-theme.md) *(superseded by 0007)*
 - [0005 — Trunk-based Git workflow](adr/0005-git-workflow.md)
+- [0006 — Bilingual content (KO/EN)](adr/0006-bilingual-content.md)
+- [0007 — PCB theme, settled](adr/0007-pcb-theme-settled.md)

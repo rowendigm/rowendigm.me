@@ -1,6 +1,7 @@
 # ADR 0004 — PCB / circuit-board visual theme
 
-- **Status**: Accepted · 2026-06-09
+- **Status**: Superseded by [ADR 0007](0007-pcb-theme-settled.md) · 2026-06-12
+  (originally Accepted · 2026-06-09)
 
 ## Context
 
