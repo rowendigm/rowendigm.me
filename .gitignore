@@ -22,3 +22,9 @@ next-env.d.ts
 .DS_Store
 Thumbs.db
 *.log
+
+# Private harness assets — kept local, not published
+.claude/agents/
+.claude/commands/ship.md
+.claude/hooks/guard.py
+.claude/settings.json

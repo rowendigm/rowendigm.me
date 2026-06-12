@@ -32,3 +32,5 @@ frame::submit<B: IoBuf> mirrors submit_read with the same shared driver-pointer
 reborrow. An integration test writes a known buffer to a file and reads it back
 to assert the contents.
 ```
+
+Style: see CLAUDE.md "Writing style".
