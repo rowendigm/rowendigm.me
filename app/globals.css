@@ -27,6 +27,19 @@
   /* ── shape ──────────────────────────────────────── */
   --radius-card: 12px;
 
+  /* ── ui primitives (ROW-4) ────────────────────────── */
+  /* new --text-* / --shadow-* tokens must also be registered in
+     lib/utils.ts (extendTailwindMerge), or cn() misclassifies them. */
+  --color-online-glow: --alpha(var(--color-online) / 70%);
+  --spacing-led: 7px;
+  --shadow-led: 0 0 8px var(--color-online-glow);
+  --text-section: 19px;
+  --text-card-title: 16px;
+  --text-chip: 12.5px;
+  --text-silk-lg: 11.5px;
+  --text-silk: 11px;
+  --text-tag: 10.5px;
+
   /* ── motion ─────────────────────────────────────── */
   --animate-led-pulse: led-pulse 2s ease-in-out infinite;
   --animate-trace-glow: trace-glow 10s ease-in-out infinite;
