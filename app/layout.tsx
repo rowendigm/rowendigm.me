@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL!),
   title,
   description,
+  alternates: { canonical: "/" },
   openGraph: {
     title,
     description,
@@ -56,6 +57,13 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css"
         />
         {children}
+        {/* Cloudflare Web Analytics. The token is a public site id,
+            not a secret. CSP allows the two insights origins. */}
+        <script
+          defer
+          src="https://static.cloudflareinsights.com/beacon.min.js"
+          data-cf-beacon='{"token": "63ac8c777b8b46c0aa598aab9fce3cde"}'
+        />
       </body>
     </html>
   );
