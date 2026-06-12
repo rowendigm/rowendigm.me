@@ -21,3 +21,5 @@ Closes #<issue>   <!-- only when an issue exists -->
 >
 > ## Test
 > `bun run verify` green.
+
+Style: see CLAUDE.md "Writing style".

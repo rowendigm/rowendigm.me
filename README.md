@@ -2,8 +2,8 @@
 
 My personal site, live at [rowendigm.me](https://rowendigm.me).
 
-I build this with an AI pair, so the rules and guardrails for how changes get made
-live in the repo itself under [`.claude/`](.claude/). The architecture is written up
+I build this with an AI pair — the rules for how changes get made live under
+[`.claude/`](.claude/) (the sharper tools stay local). The architecture is written up
 in [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md), and the reasoning behind the bigger
 decisions in [`docs/adr/`](docs/adr/).
 
