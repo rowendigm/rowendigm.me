@@ -15,6 +15,11 @@ const strings: UiStrings = {
     career: { ko: "경력", en: "Career" },
   },
   cta: { ko: "연락하기", en: "Contact" },
+  tags: {
+    plan: { ko: "계획", en: "planned" },
+    side: { ko: "사이드", en: "side" },
+    oss: { ko: "기여 예정", en: "upcoming" },
+  },
 };
 
 /** Validated at import time, same gate as the profile data. */

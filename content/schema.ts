@@ -1,10 +1,16 @@
 import { z } from "zod";
 import type { ProfileData, UiStrings } from "./types";
 
-const localized = z.object({
-  ko: z.string().trim().min(1),
-  en: z.string().trim().min(1),
-});
+/** Non-empty in both languages, with balanced **bold** markers. */
+const copy = z
+  .string()
+  .trim()
+  .min(1)
+  .refine((v) => (v.match(/\*\*/g) ?? []).length % 2 === 0, {
+    message: "unbalanced ** markers",
+  });
+
+const localized = z.object({ ko: copy, en: copy });
 
 const id = z.string().trim().min(1);
 
@@ -82,4 +88,5 @@ export const uiSchema = z.object({
     career: localized,
   }),
   cta: localized,
+  tags: z.object({ plan: localized, side: localized, oss: localized }),
 }) satisfies z.ZodType<UiStrings>;

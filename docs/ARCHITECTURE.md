@@ -32,7 +32,7 @@ components/
                     #   KO/EN segment, contact CTA
   BackgroundTraces.tsx  # substrate pattern + hero trace field + mirrored bottom field
   sections/ { Hero, Stack, Now, Planned, Contrib, Career, Footer }.tsx
-  ui/ { Led, SectionLabel, Chip, Tag }.tsx
+  ui/ { Led, SectionLabel, Chip, Tag, Section, Bold, CardList }.tsx
 content/
   types.ts          # ProfileData and friends — every copy field is a {ko,en} pair
   schema.ts         # runtime validation (build-time gate)
@@ -59,8 +59,8 @@ content/data.ts (ko+en) ── resolved by active language (lib/i18n)
   ├─ badge, headline, bio, flow[]  ─▶ Hero
   ├─ stack[]                       ─▶ Stack   ─▶ Chip, SectionLabel
   ├─ now[]                         ─▶ Now     ─▶ Tag, SectionLabel
-  ├─ planned[]                     ─▶ Planned ─▶ Tag, SectionLabel
-  ├─ contrib[]                     ─▶ Contrib ─▶ Tag, SectionLabel
+  ├─ planned[]                     ─▶ Planned ─▶ CardList (Tag, Bold)
+  ├─ contrib[]                     ─▶ Contrib ─▶ CardList (Tag, Bold)
   ├─ history[]                     ─▶ Career  ─▶ SectionLabel (timeline)
   └─ contact[], personal           ─▶ Footer
 ```
