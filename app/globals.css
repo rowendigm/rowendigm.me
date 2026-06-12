@@ -1,1 +1,98 @@
 @import "tailwindcss";
+
+@theme {
+  /* ── PCB palette (ADR 0007) ─────────────────────── */
+  --color-board: #0a0907; /* substrate */
+  --color-card: #14100c; /* component area */
+  --color-card-2: #1a1410;
+  --color-copper: #34291b; /* trace / border */
+  --color-copper-2: #4a3c28;
+  --color-ink: #ffffff; /* strongest text */
+  --color-ink-2: #e7e5e2; /* default text */
+  --color-body: #c9c2b6; /* paragraph */
+  --color-muted: #a39a8b; /* silkscreen */
+  --color-faint: #6e665a;
+  --color-chip: #1f1812; /* chip bg */
+  --color-amber: #f59e0b; /* the only strong accent */
+  --color-amber-2: #fbbf24;
+  --color-amber-dim: rgb(245 158 11 / 0.14);
+  --color-amber-line: rgb(245 158 11 / 0.32);
+  --color-online: #4ade80; /* the single green LED */
+  --color-on-amber: #1a1206; /* text on amber */
+
+  /* ── type ───────────────────────────────────────── */
+  --font-sans: "Pretendard Variable", Pretendard, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
+
+  /* ── shape ──────────────────────────────────────── */
+  --radius-card: 12px;
+
+  /* ── motion ─────────────────────────────────────── */
+  --animate-led-pulse: led-pulse 2s ease-in-out infinite;
+  --animate-trace-glow: trace-glow 10s ease-in-out infinite;
+  --animate-trace-flow: trace-flow 10s linear infinite;
+
+  @keyframes led-pulse {
+    0%,
+    100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.4;
+    }
+  }
+  @keyframes trace-glow {
+    0%,
+    38%,
+    100% {
+      stroke-opacity: 0;
+    }
+    55% {
+      stroke-opacity: 0.55;
+    }
+    72% {
+      stroke-opacity: 0.12;
+    }
+  }
+  @keyframes trace-flow {
+    /* offset = 2 × dash period (7 + 520) of the hero trace path — keep in
+       sync with BackgroundTraces' stroke-dasharray */
+    to {
+      stroke-dashoffset: -1054;
+    }
+  }
+}
+
+/* ── base ─────────────────────────────────────────── */
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--color-board);
+  color: var(--color-ink-2);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  word-break: keep-all;
+  -webkit-font-smoothing: antialiased;
+}
+::selection {
+  background: var(--color-amber-dim);
+  color: var(--color-ink);
+}
+*:focus-visible {
+  outline: 2px solid var(--color-amber);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition-duration: 0.01ms !important;
+  }
+}
