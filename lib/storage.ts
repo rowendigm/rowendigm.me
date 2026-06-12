@@ -12,15 +12,22 @@ export function readStored<T extends string>(
   key: string,
   isValid: (raw: string) => raw is T,
 ): T | null {
-  try {
-    const raw = window.localStorage.getItem(key);
-    return raw !== null && isValid(raw) ? raw : null;
-  } catch {
-    return null; // no window (prerender) or storage blocked (S4)
+  if (typeof window === "undefined") {
+    return null; // prerender
   }
+  let raw: string | null;
+  try {
+    raw = window.localStorage.getItem(key);
+  } catch {
+    return null; // storage blocked (S4)
+  }
+  return raw !== null && isValid(raw) ? raw : null;
 }
 
 export function writeStored(key: string, value: string): void {
+  if (typeof window === "undefined") {
+    return;
+  }
   try {
     window.localStorage.setItem(key, value);
   } catch {

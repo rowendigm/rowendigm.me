@@ -79,7 +79,12 @@ export const profileSchema = z.object({
 }) satisfies z.ZodType<ProfileData>;
 
 export const uiSchema = z.object({
-  nav: z.object({ stack: localized, projects: localized, career: localized }),
+  nav: z.object({
+    stack: localized,
+    projects: localized,
+    career: localized,
+    langLabel: localized,
+  }),
   headings: z.object({
     stack: localized,
     now: localized,

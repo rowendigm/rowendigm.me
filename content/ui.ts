@@ -6,6 +6,7 @@ const strings: UiStrings = {
     stack: { ko: "기술", en: "Skills" },
     projects: { ko: "프로젝트", en: "Projects" },
     career: { ko: "경력", en: "Career" },
+    langLabel: { ko: "언어 선택", en: "Language" },
   },
   headings: {
     stack: { ko: "기술 스택", en: "Skills" },

@@ -11,8 +11,9 @@ in `adr/`; everything else here is expected to evolve.
 - **Next.js 15 App Router** with **`output: 'export'`** → fully static `out/` directory
   (ADR 0002). No server runtime at request time — every interactive feature below runs
   entirely in the browser.
-- **Server Components render the shell**; the interactive layer (KO/EN toggle, KST clock
-  — ADR 0006) lives in client leaves kept as small as the feature allows.
+- **`app/page.tsx` is the single client boundary**: the language toggle changes every
+  section's text, so the assembled tree owns the `Lang` state (ADR 0006). The layout
+  stays a Server Component; prerender still emits the full Korean page.
 - **Tailwind v4 CSS-first** (ADR 0003): tokens in `app/globals.css` `@theme`.
 
 ## Directory map
@@ -21,7 +22,7 @@ in `adr/`; everything else here is expected to evolve.
 app/
   layout.tsx        # metadata (metadataBase from NEXT_PUBLIC_SITE_URL);
                     #   fonts (Pretendard Variable + JetBrains Mono) + Analytics (page PR)
-  page.tsx          # composes TopNav + sections
+  page.tsx          # composes TopNav + sections ('use client' — the lang boundary)
   globals.css       # @import "tailwindcss" + @theme tokens + keyframes (tokens: theme PR)
   sitemap.ts        # build-time sitemap (no app/robots.ts — export bug) (seo PR)
   not-found.tsx     # (page PR)
@@ -36,7 +37,8 @@ components/
 content/
   types.ts          # ProfileData and friends — every copy field is a {ko,en} pair
   schema.ts         # runtime validation (build-time gate)
-  data.ts           # the profile content + UI strings (both languages)
+  data.ts           # the profile content (both languages)
+  ui.ts             # nav/heading/cta strings, same zod gate
 lib/
   utils.ts          # cn()
   i18n.ts           # L/tr helpers — resolve {ko,en} by active language (content PR)
