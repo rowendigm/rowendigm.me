@@ -21,13 +21,14 @@ in `adr/`; everything else here is expected to evolve.
 ```
 app/
   layout.tsx        # metadata (metadataBase from NEXT_PUBLIC_SITE_URL);
-                    #   fonts (Pretendard Variable + JetBrains Mono) + Analytics (page PR)
+                    #   JetBrains Mono self-hosted via next/font, Pretendard via CDN;
+                    #   Cloudflare Web Analytics (deploy PR)
   page.tsx          # composes TopNav + sections ('use client' — the lang boundary)
   globals.css       # @import "tailwindcss" + @theme tokens + keyframes (tokens: theme PR)
-  sitemap.ts        # build-time sitemap (no app/robots.ts — export bug) (seo PR)
-  not-found.tsx     # (page PR)
-  manifest.ts       # (seo PR)
-  icon.tsx          # (seo PR)
+  sitemap.ts        # build-time sitemap (no app/robots.ts — export bug)
+  not-found.tsx
+  manifest.ts
+  icon.png          # static favicon (icon.tsx skipped — metadata-route risk under export)
 components/
   TopNav.tsx        # client — logo + online LED, KST clock, section links,
                     #   KO/EN segment, contact CTA
@@ -44,10 +45,9 @@ lib/
   i18n.ts           # L/tr helpers — resolve {ko,en} by active language (content PR)
   storage.ts        # safe localStorage access (client-storage rule S1/S3/S4)
 public/
-  _headers          # Cloudflare security headers (CSP, etc. — content: seo PR)
-  robots.txt        # static robots (app/robots.ts broken under export — content: seo PR)
-  og.png            # static Open Graph image (no dynamic OG — ADR 0002) (seo PR)
-  favicon.ico       # (seo PR)
+  _headers          # Cloudflare security headers (CSP: jsdelivr + cloudflare insights)
+  robots.txt        # static robots (app/robots.ts broken under export)
+  og.png            # static Open Graph image (no dynamic OG — ADR 0002)
 ```
 
 ## Data flow
