@@ -95,4 +95,9 @@ export type UiStrings = {
     career: Localized;
   };
   cta: Localized; // "연락하기"
+  tags: {
+    plan: Localized; // "계획"
+    side: Localized; // "사이드"
+    oss: Localized; // "기여 예정"
+  };
 };

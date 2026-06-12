@@ -40,6 +40,15 @@
   --text-silk: 11px;
   --text-tag: 10.5px;
 
+  /* sections (ROW-5) */
+  --text-hero: clamp(32px, 6vw, 44px);
+  --text-hero--line-height: 1.16;
+  --text-bio: 16.5px;
+  --text-card-body: 14.5px;
+  --text-year: 12px;
+  /* sticky TopNav height + breathing room — TopNav (ROW-6) must match */
+  --spacing-nav-offset: 76px;
+
   /* ── motion ─────────────────────────────────────── */
   --animate-led-pulse: led-pulse 2s ease-in-out infinite;
   --animate-trace-glow: trace-glow 10s ease-in-out infinite;
