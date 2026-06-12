@@ -7,3 +7,11 @@ export const DEFAULT_LANG: Lang = "ko";
 export function tr(value: Localized, lang: Lang): string {
   return value[lang];
 }
+
+/** The storage key for the visitor's language choice. */
+export const LANG_KEY = "rd-lang";
+
+/** Validate a raw stored value as a Lang (rules/client-storage S3). */
+export function isLang(value: string): value is Lang {
+  return value === "ko" || value === "en";
+}

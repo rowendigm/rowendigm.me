@@ -40,6 +40,7 @@ content/
 lib/
   utils.ts          # cn()
   i18n.ts           # L/tr helpers — resolve {ko,en} by active language (content PR)
+  storage.ts        # safe localStorage access (client-storage rule S1/S3/S4)
 public/
   _headers          # Cloudflare security headers (CSP, etc. — content: seo PR)
   robots.txt        # static robots (app/robots.ts broken under export — content: seo PR)
