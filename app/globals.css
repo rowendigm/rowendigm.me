@@ -12,7 +12,7 @@
   --color-body: #c9c2b6; /* paragraph */
   --color-muted: #a39a8b; /* silkscreen */
   --color-faint: #6e665a;
-  --color-chip: #1f1812; /* chip bg */
+  --color-chip-bg: #1f1812; /* chip bg */
   --color-amber: #f59e0b; /* the only strong accent */
   --color-amber-2: #fbbf24;
   --color-amber-dim: rgb(245 158 11 / 0.14);
@@ -48,6 +48,10 @@
   --text-year: 12px;
   /* sticky TopNav height + breathing room — TopNav (ROW-6) must match */
   --spacing-nav-offset: 76px;
+  /* career timeline dot. offset = Career's pl-6 (24px) + border-l-2 (2px)
+     + half the dot — keep in sync with Career.tsx if the indent changes */
+  --spacing-tl-dot: 11px;
+  --spacing-tl-dot-offset: 31px;
 
   /* ── motion ─────────────────────────────────────── */
   --animate-led-pulse: led-pulse 2s ease-in-out infinite;
