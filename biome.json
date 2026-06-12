@@ -15,7 +15,12 @@
     "indentWidth": 2
   },
   "css": {
-    "formatter": { "enabled": false }
+    "parser": {
+      "tailwindDirectives": true
+    },
+    "formatter": {
+      "enabled": false
+    }
   },
   "linter": {
     "enabled": true,
